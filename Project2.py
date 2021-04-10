@@ -15,7 +15,32 @@ def get_titles_from_search_results(filename):
     [('Book title 1', 'Author 1'), ('Book title 2', 'Author 2')...]
     """
 
-    pass
+    with open(filename, "r") as fp:
+        soup = BeautifulSoup(fp.read(), 'html.parser')
+    rows = soup.find_all('tr')
+    return_list = list()
+    for row in rows:
+        td_result = row.find_all('td')
+        finder = td_result[1]
+        title = finder.find('a', class_='bookTitle').text
+        title = title.strip()
+        
+        author = finder.find('a',class_='authorName').text
+        author = author.strip()
+        return_list.append((title, author))
+    return return_list
+        
+    #Booktitles = []
+    #Authors = []
+    #tags = soup.find_all('img')
+    #for tag in tags:
+     #   t = tag.parent.get('title', None)
+    #    a = tag.parent.get('author',None)
+     #   if t and a != None:
+    #        Booktitles.append(t.strip('/n'))
+     #       Authors.append(t.strip('/n'))
+    #return (Booktitles,Authors)
+    
 
 
 def get_search_links():
