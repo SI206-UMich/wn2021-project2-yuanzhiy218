@@ -1,3 +1,6 @@
+# Ted Yuan
+# Working with Banghan Guo, Xingyu Pan
+# Unique name: yuanzhiy
 from bs4 import BeautifulSoup
 import requests
 import re
