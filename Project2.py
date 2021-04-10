@@ -61,7 +61,7 @@ def get_search_links():
 
 
 def get_book_summary(book_url):
-    """
+      """
     Write a function that creates a BeautifulSoup object that extracts book
     information from a book's webpage, given the URL of the book. Parse through
     the BeautifulSoup object, and capture the book title, book author, and number 
@@ -73,9 +73,28 @@ def get_book_summary(book_url):
     You can easily capture CSS selectors with your browser's inspector window.
     Make sure to strip() any newlines from the book title and number of pages.
     """
-
-    pass
-
+    return_list = list()
+    r = requests.get(book_url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    #parent = soup.find('div', id = "metacol")
+    #book_title = parent.find(id = "book_title").text.strip('\n').strip()
+   # author = parent.find('a', class_ = "authorName").text
+   # pages = parent.find('span', itemprop ='pagenumber').text.strip('\n').strip()
+   # return (bookTitle, author, pages)
+    title = soup.find("h1", id = "bookTitle")
+    title = title.get_text()
+    title = title.strip()
+    authorAnchor = soup.find("a", class_ = "authorName")
+    author = authorAnchor.find("span")
+    author = author.get_text()
+    author = author.strip()
+    page_num_anchor = soup.find("div", id= "details")
+    page_num_anchor_row = page_num_anchor.find("div", class_ = "row")
+    page_num = page_num_anchor_row.find_all("span")[-1]
+    page_num = page_num.get_text()
+    page_num = page_num.strip(' pages')
+    return_list = [str(title), str(author), int(page_num)]
+    return tuple(return_list)
 
 def summarize_best_books(filepath):
     """
